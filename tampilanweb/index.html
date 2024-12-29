@@ -1,0 +1,96 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Membuat tampilan responsif -->
+    <title>Deteksi Objek</title> <!-- Judul halaman -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif; /* Font Arial dengan alternatif sans-serif */
+            background: linear-gradient(135deg, #34495e, #95a5a6); /* background dengan Gradien biru tua ke abu-abu muda */
+            color: #ecf0f1; /* Warna teks putih */
+            margin: 0; /* Menghilangkan margin default */
+            padding: 0; /* Menghilangkan padding default */
+            display: flex; /* Menggunakan Flexbox untuk tata letak */
+            justify-content: center; /* formatnya jadi center */
+            align-items: center; /* formatnya jadi center */
+            height: 100vh; /* menjaga halaman tetap penuh */
+            text-align: center; /* Teks rata tengah */
+            box-sizing: border-box; /* padding dan border ke ukuran elemen box */
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.85); /* Latar belakang container putih semi-transparan */
+            border-radius: 10px; /* Sudut melengkung */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Efek bayangan */
+            padding: 40px; /* Ruang di sekitar konten */
+            max-width: 600px; /* Lebar maksimal 600px */
+            width: 100%; /* Lebar penuh hingga batas maksimum */
+            box-sizing: border-box; /* Memasukkan padding ke ukuran elemen */
+        }
+
+        h1 {
+            font-size: 28px; /* Ukuran font untuk heading */
+            color: #2c3e50; /* Warna teks biru tua */
+            margin-bottom: 10px; /* Jarak bawah heading */
+        }
+
+        p {
+            font-size: 18px; /* Ukuran font untuk teks dengan format html p */
+            color: #000000; /* Warna teks hitam */
+            margin-bottom: 40px; /* Jarak bawah paragraf */
+        }
+
+        button {
+            font-size: 18px; /* Ukuran font tombol */
+            padding: 15px; /* Padding tombol */
+            margin: 20px; /* Jarak antar tombol */
+            cursor: pointer; /* Menampilkan kursor pointer saat dihover */
+            background-color: #3498db; /* Warna latar tombol (biru) */
+            color: #ecf0f1; /* Warna teks tombol (putih pucat) */
+            border: none; /* Menghapus border tombol */
+            border-radius: 30px; /* Sudut tombol melengkung */
+            transition: background-color 0.3s ease; /* Efek transisi warna saat hover */
+            width: 45%; /* Lebar tombol 45% dari elemen induk */
+            min-width: 180px; /* Lebar minimum tombol */
+        }
+
+        button:hover {
+            background-color: #2980b9; /* Warna tombol saat dihover */
+        }
+
+        .button-container {
+            display: flex; /* Menggunakan Flexbox untuk tata letak tombol */
+            justify-content: space-between; /* Ruang di antara tombol */
+            gap: 20px; /* Jarak antar tombol */
+        }
+
+        @media (max-width: 768px) { /* Aturan responsif untuk layar dengan lebar maks. 768px */
+            h1 {
+                font-size: 24px; /* Ukuran font heading lebih kecil */
+            }
+            .container {
+                padding: 30px; /* Padding lebih kecil pada kontainer */
+            }
+            button {
+                width: 100%; /* Tombol mengambil lebar penuh */
+                min-width: 0; /* Menghapus batas lebar minimum */
+            }
+            .button-container {
+                flex-direction: column; /* Tata letak tombol vertikal */
+                align-items: center; /* Pusatkan tombol */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hallo Selamat Datang</h1> <!-- Heading utama -->
+        <p>Ini adalah sistem deteksi objek</p> <!-- Paragraf deskripsi -->
+        <div class="button-container">
+            <button onclick="window.location.href='/realtime'">Video Real-Time</button> <!-- Tombol untuk ke halaman real-time -->
+            <button onclick="window.location.href='/upload'">Upload Gambar</button> <!-- Tombol untuk ke halaman upload gambar -->
+        </div>
+    </div>
+</body>
+</html>

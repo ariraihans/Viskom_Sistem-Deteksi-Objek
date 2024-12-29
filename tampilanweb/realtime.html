@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Membuat tampilan responsif -->
+    <title>Deteksi Objek Real-Time</title> <!-- Judul halaman -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> <!-- Menambahkan Font Awesome -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif; /* Font utama halaman */
+            background: linear-gradient(135deg, #34495e, #7f8c8d); /* Background dengan Gradien */
+            color: #ecf0f1; /* Warna */
+            margin: 0; /* margin default jadi 0 */
+            padding: 0; /* padding default jadi 0 */
+            display: flex; /* Menggunakan Flexbox untuk tata letak */
+            justify-content: center; /* Formatnya jadi Center */
+            align-items: center; /* Formatnya jadi Center */
+            min-height: 100vh;  /* Menjaga halaman tetap penuh */
+            text-align: center; /* Mengatur teks berada di tengah */
+            box-sizing: border-box; /* Mengatur box model */
+            overflow: auto; /* Menambahkan scrollbar jika konten meluap */
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9); /* Warna background kontainer */
+            border-radius: 10px; /* Membuat sudut melengkung */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Memberikan bayangan */
+            padding: 40px; /* Memberikan padding */
+            max-width: 750px; /* Lebar maksimum kontainer */
+            width: 100%; /* Lebar kontainer penuh */
+            box-sizing: border-box; /* Mengatur box model */
+            margin: 20px; /* Memberikan margin luar */
+        }
+
+        h1 {
+            font-size: 28px; /* Ukuran font untuk judul h1 */
+            color: #2c3e50; /* Warna teks judul */
+            margin-bottom: 20px; /* Memberikan jarak bawah */
+        }
+
+        video {
+            width: 100%; /* Lebar video penuh */
+            height: auto; /* Tinggi video menyesuaikan */
+            max-width: 640px;  /* Batasan ukuran video */
+            border-radius: 8px; /* Membuat sudut melengkung */
+            margin-bottom: 20px; /* Memberikan jarak bawah */
+        }
+
+        button {
+            font-size: 18px; /* Ukuran font tombol */
+            padding: 15px; /* Memberikan padding tombol */
+            margin: 20px 0; /* Memberikan jarak vertikal tombol */
+            cursor: pointer; /* Memberikan kursor klik */
+            background-color: #3498db; /* Warna latar tombol */
+            color: #ecf0f1; /* Warna teks tombol */
+            border: none; /* Menghapus border tombol */
+            border-radius: 30px; /* Membuat sudut melengkung tombol */
+            transition: background-color 0.3s ease; /* Efek transisi warna */
+            width: 100%; /* Lebar tombol penuh */
+            max-width: 300px; /* Lebar maksimum tombol */
+            display: inline-flex; /* Menampilkan sebagai flex inline */
+            align-items: center; /* Pusatkan konten vertikal */
+            justify-content: center; /* Pusatkan konten horizontal */
+            gap: 8px; /* Jarak antar elemen dalam tombol */
+        }
+
+        button:hover {
+            background-color: #2980b9; /* Warna latar tombol saat hover */
+        }
+
+        #result-container img {
+            width: 100%;  /* Ukuran gambar hasil deteksi mengikuti lebar kontainer */
+            height: auto; /* Tinggi menyesuaikan */
+            margin-top: 20px; /* Memberikan jarak atas */
+            border-radius: 8px; /* Membuat sudut melengkung */
+        }
+
+        .fa-arrow-down {
+            font-size: 24px;  /* Ukuran font panah */
+            font-weight: bold;  /* Membuat panah lebih tebal */
+            margin-left: 10px; /* Memberikan jarak kiri */
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 24px; /* Ukuran font judul lebih kecil di layar kecil */
+            }
+            .container {
+                padding: 30px; /* Padding kontainer lebih kecil */
+            }
+            button {
+                width: 100%; /* Tombol penuh di layar kecil */
+                min-width: 0; /* Hilangkan batas minimum */
+            }
+        }
+
+        /* kontainer tetap di tengah saat scroll */
+        .wrapper {
+            display: flex; /* Menggunakan Flexbox */
+            justify-content: center; /* Pusatkan secara horizontal */
+            align-items: center; /* Pusatkan secara vertikal */
+            min-height: 100vh; /* Tinggi minimum penuh layar */
+            width: 100%; /* Lebar penuh */
+            padding: 20px; /* Padding di sekitar konten */
+            box-sizing: border-box; /* Mengatur box model */
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <h1>Deteksi Objek Real-Time</h1> <!-- Judul halaman -->
+            <video id="video" autoplay></video> <!-- Elemen video untuk menampilkan kamera -->
+            <button id="capture">
+                Hasil Deteksi <i class="fa fa-arrow-down"></i> <!-- Tanda panah untuk tombol -->
+            </button>
+
+            <div id="result-container">
+                <!-- Gambar hasil deteksi akan muncul di sini -->
+            </div>
+
+            <button id="back-button" onclick="window.location.href='/'">Kembali ke Halaman Utama</button> <!-- Tombol kembali ke halaman utama -->
+        </div>
+    </div>
+
+    <script>
+        const video = document.getElementById('video'); // Ambil elemen video
+        const resultContainer = document.getElementById('result-container'); // Ambil elemen kontainer hasil
+
+        // Akses kamera
+        navigator.mediaDevices.getUserMedia({ video: true }) // Minta izin akses video
+            .then((stream) => { // Jika berhasil
+                video.srcObject = stream; // Tampilkan video ke elemen
+            })
+            .catch((err) => { // Jika gagal
+                console.error("Error accessing the camera: ", err); // Cetak kesalahan
+            });
+
+        document.getElementById('capture').addEventListener('click', () => { // Tambahkan event click ke tombol capture
+            resultContainer.innerHTML = ''; // Hapus gambar sebelumnya di kontainer hasil
+
+            const canvas = document.createElement('canvas'); // Buat elemen canvas baru
+            canvas.width = 640; // Atur lebar canvas
+            canvas.height = 480; // Atur tinggi canvas
+            const context = canvas.getContext('2d'); // Dapatkan context untuk menggambar
+
+            context.drawImage(video, 0, 0, canvas.width, canvas.height); // Gambar frame video ke canvas
+
+            canvas.toBlob((blob) => { // Konversi canvas ke blob
+                const formData = new FormData(); // Buat FormData baru
+                formData.append('image', blob); // Tambahkan blob sebagai file gambar
+
+                fetch('/detect', { // Kirim data ke backend
+                    method: 'POST', // Gunakan metode POST
+                    body: formData // Data yang dikirim
+                })
+                .then(response => response.json()) // Konversi respons ke JSON
+                .then(data => { // Jika berhasil
+                    const img = new Image(); // Buat elemen gambar baru
+                    img.src = 'data:image/jpeg;base64,' + data.image; // Tambahkan data gambar
+
+                    img.onload = () => { // Setelah gambar dimuat
+                        resultContainer.appendChild(img); // Tambahkan gambar ke kontainer hasil
+                    };
+                })
+                .catch(err => console.error('Error during detection:', err)); // Jika gagal
+            }, 'image/jpeg'); // Format menjadi JPEG
+        });
+    </script>
+</body>
+</html>

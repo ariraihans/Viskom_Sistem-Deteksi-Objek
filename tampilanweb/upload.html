@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Mengatur tampilan agar responsif -->
+    <title>Unggah Gambar untuk Deteksi</title> <!-- Judul halaman -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> <!-- Menambahkan Font Awesome -->
+    <style>
+        body { 
+            font-family: 'Arial', sans-serif; /* Menentukan font */
+            background: linear-gradient(135deg, #34495e, #7f8c8d); /* Background Gradien */
+            color: #ecf0f1; /* Warna teks */
+            margin: 0; /* Menghapus margin bawaan browser */
+            padding: 0; /* Menghapus padding bawaan browser */
+            display: flex; /* Mengatur tata letak menggunakan Flexbox */
+            justify-content: center; /* Mengatur konten agar berada di tengah horizontal */
+            align-items: center; /* Mengatur konten agar berada di tengah vertikal */
+            min-height: 100vh; /* Tinggi minimum body */
+            text-align: center; /* Menentukan teks berada di tengah */
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9); /* Warna latar belakang semi-transparan */
+            border-radius: 10px; /* Membuat sudut elemen membulat */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Menambahkan bayangan pada elemen */
+            padding: 40px; /* Padding di dalam elemen */
+            max-width: 750px; /* Lebar maksimum kontainer */
+            width: 100%; /* Menggunakan 100% dari lebar parent */
+            box-sizing: border-box; /* Menyertakan padding dan border dalam ukuran elemen */
+            margin: 20px; /* Memberi jarak di luar elemen */
+        }
+
+        h1 {
+            font-size: 28px; /* Ukuran font judul h1 */
+            color: #2c3e50; /* Warna teks judul */
+            margin-bottom: 10px; /* Margin bawah judul */
+        }
+
+        p {
+            font-size: 18px; /* Ukuran font teks dengan format p */
+            color: #000000; /* Warna teks paragraf */
+            margin-top: 0; /* Margin atas paragraf */
+            margin-bottom: 20px; /* Margin bawah paragraf */
+        }
+
+        form {
+            margin-bottom: 20px; /* Margin bawah form */
+            display: flex; /* Menggunakan Flexbox untuk tata letak form */
+            flex-direction: column; /* Menyusun elemen form secara vertikal */
+            align-items: center; /* Menyelaraskan elemen form di tengah */
+        }
+
+        input[type="file"] {
+            font-size: 16px; /* Ukuran font input file */
+            padding: 12px 20px; /* Padding di dalam input file */
+            margin-top: 10px; /* Margin atas input file */
+            cursor: pointer; /* Menampilkan kursor pointer saat hover */
+            display: inline-block; /* Menampilkan input file secara inline */
+            width: 100%; /* Lebar 100% dari parent */
+            max-width: 300px; /* Lebar maksimum input file */
+            margin-bottom: 20px; /* Margin bawah input file */
+            border-radius: 30px; /* Membulatkan sudut input file */
+            background-color: #3498db; /* Warna latar tombol input file */
+            color: #fff; /* Warna teks input file */
+            text-align: center; /* Teks di tengah input file */
+            border: none; /* Menghilangkan border */
+            transition: background-color 0.3s ease; /* Animasi perubahan warna */
+        }
+
+        input[type="file"]:hover {
+            background-color: #2980b9; /* Warna latar tombol saat hover */
+        }
+
+        button {
+            font-size: 18px; /* Ukuran font tombol */
+            padding: 15px; /* Padding di dalam tombol */
+            margin: 10px 0; /* Margin atas dan bawah tombol */
+            cursor: pointer; /* Menampilkan kursor pointer */
+            background-color: #3498db; /* Warna tombol */
+            color: #ecf0f1; /* Warna teks tombol */
+            border: none; /* Menghilangkan border tombol */
+            border-radius: 30px; /* Membuat sudut tombol melengkung */
+            transition: background-color 0.3s ease; /* Animasi perubahan warna */
+            width: 100%; /* Lebar tombol 100% dari parent */
+            max-width: 300px; /* Lebar maksimum tombol */
+            display: inline-flex; /* Menyusun elemen secara inline fleksibel */
+            align-items: center; /* Menyelaraskan konten tombol secara vertikal */
+            justify-content: center; /* Menyelaraskan konten tombol secara horizontal */
+            gap: 8px; /* Memberi jarak antar elemen dalam tombol */
+        }
+
+        button:hover {
+            background-color: #2980b9; /* Warna tombol saat hover */
+        }
+
+        #result-image {
+            margin-top: 20px; /* Margin atas gambar hasil deteksi */
+            max-width: 100%; /* Membatasi lebar gambar sesuai kontainer */
+            height: auto; /* Menjaga proporsi gambar */
+            border-radius: 8px; /* Membulatkan sudut gambar */
+        }
+
+        #back-button {
+            font-size: 18px; /* Ukuran font tombol kembali */
+            padding: 15px; /* Padding di dalam tombol kembali */
+            margin-top: 20px; /* Margin atas tombol kembali */
+            cursor: pointer; /* Menampilkan kursor pointer */
+            background-color: #3498db; /* Warna tombol kembali */
+            color: #ecf0f1; /* Warna teks tombol kembali */
+            border: none; /* Menghilangkan border tombol kembali */
+            border-radius: 30px; /* Membuat sudut tombol melengkung */
+            transition: background-color 0.3s ease; /* Animasi perubahan warna */
+            width: 100%; /* Lebar tombol kembali 100% dari parent */
+            max-width: 300px; /* Lebar maksimum tombol kembali */
+        }
+
+        #back-button:hover {
+            background-color: #2980b9; /* Warna tombol kembali saat hover */
+        }
+
+        @media (max-width: 768px) { 
+            h1 {
+                font-size: 24px; /* Ukuran font untuk layar kecil */
+            }
+
+            .container {
+                padding: 30px; /* Padding dalam container untuk layar kecil */
+            }
+
+            input[type="file"], button {
+                width: 100%; /* Lebar elemen sesuai kontainer untuk layar kecil */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Deteksi melalui gambar (Photo)</h1> <!-- Judul halaman-->
+        <p>Upload file terlebih dahulu</p> <!-- Instruksi pengunggahan -->
+
+        <form id="upload-form" enctype="multipart/form-data"> <!-- Form pengunggahan -->
+            <input type="file" id="image-upload" name="image" accept="image/*"> <!-- Input untuk file gambar -->
+            <button type="submit"> <!-- Tombol untuk memproses gambar -->
+                Hasil Deteksi <i class="fa fa-arrow-down"></i> <!-- Ikon panah -->
+            </button>
+        </form>
+
+        <h2>Hasil Deteksi</h2> <!-- Judul untuk hasil deteksi -->
+        <img id="result-image" width="640" height="480"> <!-- Gambar hasil deteksi -->
+
+        <button id="back-button" onclick="window.location.href='/'">Kembali ke Halaman Utama</button> <!-- Tombol kembali -->
+    </div>
+
+    <script>
+        document.getElementById('upload-form').addEventListener('submit', (e) => { 
+            e.preventDefault(); /* Mencegah perilaku default form */
+
+            const formData = new FormData(); /* Membuat objek FormData */
+            const fileInput = document.getElementById('image-upload'); /* Mengambil input file */
+            formData.append('image', fileInput.files[0]); /* Menambahkan file ke FormData */
+
+            fetch('/detect_upload', { 
+                method: 'POST', /* Metode POST */
+                body: formData /* Mengirim data form */
+            })
+            .then(response => response.json()) /* Mengubah response menjadi JSON */
+            .then(data => {
+                document.getElementById('result-image').src = 'data:image/jpeg;base64,' + data.image; /* Menampilkan gambar hasil */
+            })
+            .catch(err => console.error('Error during upload detection:', err)); /* Menangani error */
+        });
+    </script>
+</body>
+</html>
